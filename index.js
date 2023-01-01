@@ -1,6 +1,7 @@
 const { knex } = require('./connection')
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
+const data = require('./data')
 
 const typeDefs = `#graphql
   type Student {
@@ -8,14 +9,22 @@ const typeDefs = `#graphql
     name: String
   }
 
+  type Fruit {
+    id: ID!
+    firstname: String
+    lastname: String
+  }
+
   type Query {
     students: [Student]
+    fruits: [Fruit]
   }
 `;
 
 const resolvers = {
     Query: {
         students: async () => await getStudents(),
+        fruits: async () => await getFruits(),
     },
 };
 
@@ -42,8 +51,7 @@ async function getStudents() {
     return result
 }
 
-// (async () => {
-//     const students = await getStudents();
-//     console.log(students);
-// })();
-
+async function getFruits() {
+    const result = data;
+    return result
+}
