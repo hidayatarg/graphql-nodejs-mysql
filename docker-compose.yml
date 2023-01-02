@@ -43,6 +43,17 @@ services:
         volumes: 
             - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
 
+    mssql:
+        image: 'mcr.microsoft.com/mssql/server'
+        restart: always
+        ports:
+            - '1433:1433'
+        environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=Secret1234
+        volumes:
+            - './drive:/var/opt/mssql'
+
 # below is for MySql
     adminer:
         image: adminer
