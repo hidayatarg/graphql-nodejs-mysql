@@ -26,25 +26,36 @@ services:
         volumes: 
             - ./init:/docker-entrypoint-initdb.d
     
-    db:
+    postgres:
         image: postgres
         restart: always
         expose:
-          - "3306"
+          - "5432"
         environment:
-          - POSTGRES_USER=myuser
-          - POSTGRES_PASSWORD=mypassword
-          - POSTGRES_DB=mydatabase
+          - POSTGRES_USER=root
+          - POSTGRES_PASSWORD=root
+          - POSTGRES_DB=root
         ports:
           - "5432:5432"
         networks:
           - app-tier      
     
         volumes: 
-            - ./init:/docker-entrypoint-initdb.d
+            - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
 
+# below is for MySql
     adminer:
         image: adminer
         restart: always
         ports: 
             - 8080:8080
+
+    pgadmin-compose:
+        image: dpage/pgadmin4
+        environment: 
+            PGADMIN_DEFAULT_EMAIL: "test@gmail.com"
+            PGADMIN_DEFAULT_PASSWORD: "test123!"
+        ports: 
+            - "16543:80"
+        depends_on: 
+            - postgres    
